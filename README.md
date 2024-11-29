@@ -22,7 +22,7 @@ A **real-time token monitoring bot** for the Solana network. This bot fetches ne
 
 ## **Installation**
 ### Clone the repository
-- git clone https://github.com/maximiliamid/solana-token-tracker.git.
+- git clone [https://github.com/maximiliamid/solana-token-tracker.git.](https://github.com/maximiliamid/Solana--Token-Tracker-Bot.git)
 - cd solana-token-tracker.
 - npm install
 
