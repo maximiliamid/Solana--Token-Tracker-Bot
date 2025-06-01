@@ -29,3 +29,12 @@ A **real-time token monitoring bot** for the Solana network. This bot fetches ne
 ### How to run
 ```bash
 - npm start
+```
+
+### Environment Variables
+Set the following variables in a `.env` file (see `.env.example`):
+- `SOLANA_RPC_URL` - RPC endpoint for connecting to Solana.
+- `WALLET_PRIVATE_KEY` - Private key for the wallet in JSON array format.
+- `BASE_INVEST_AMOUNT` - Amount of SOL to invest when buying a token.
+- `TAKE_PROFIT_PERCENTAGE` - Percentage gain to trigger selling for profit.
+- `STOP_LOSS_PERCENTAGE` - Percentage drop to trigger selling to stop loss.
