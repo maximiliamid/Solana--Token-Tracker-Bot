@@ -1,37 +1,37 @@
-const { getTokenDetails } = require("./tokenAnalyzer");
+const { getTokenDetails } = require('./tokenAnalyzer');
+const { sellToken } = require('./tokenTrader');
 
 async function monitorAndTrade(details) {
   const buyPrice = parseFloat(details.priceUsd);
-  const takeProfitPrice = buyPrice * (1 + process.env.TAKE_PROFIT_PERCENTAGE / 100);
-  const stopLossPrice = buyPrice * (1 - process.env.STOP_LOSS_PERCENTAGE / 100);
+  const takeProfitPrice = buyPrice * (1 + (parseFloat(process.env.TAKE_PROFIT_PERCENTAGE) || 10) / 100);
+  const stopLossPrice = buyPrice * (1 - (parseFloat(process.env.STOP_LOSS_PERCENTAGE) || 5) / 100);
 
-  console.log(`\n📊 Target Harga:
-  - Harga Beli       : $${buyPrice.toFixed(6)}
-  - Take Profit (TP) : $${takeProfitPrice.toFixed(6)}
-  - Stop Loss (SL)   : $${stopLossPrice.toFixed(6)}\n`);
+  console.log(`\n📊 Target Harga:\n  - Harga Beli       : $${buyPrice.toFixed(6)}\n  - Take Profit (TP) : $${takeProfitPrice.toFixed(6)}\n  - Stop Loss (SL)   : $${stopLossPrice.toFixed(6)}\n`);
 
-  while (true) {
+  for (;;) {
     const currentPrice = await getTokenPrice(details.baseToken.address);
     console.log(`💹 Harga Saat Ini: $${currentPrice.toFixed(6)}`);
 
     if (currentPrice >= takeProfitPrice) {
-      console.log("🎉 Harga mencapai target profit! Menjual token...");
-      await sellToken(details.baseToken, "ALL");
+      console.log('🎉 Harga mencapai target profit! Menjual token...');
+      await sellToken(details.baseToken, 'ALL');
       break;
     } else if (currentPrice <= stopLossPrice) {
-      console.log("📉 Harga mencapai target stop loss. Menjual token...");
-      await sellToken(details.baseToken, "ALL");
+      console.log('📉 Harga mencapai target stop loss. Menjual token...');
+      await sellToken(details.baseToken, 'ALL');
       break;
     }
 
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    await new Promise(res => setTimeout(res, 5000));
   }
 }
 
-
 async function getTokenPrice(address) {
   const tokenData = await getTokenDetails(address);
-  return parseFloat(tokenData.priceUsd || 0); // Dapatkan harga USD
+  // Simulate price fluctuation around current price
+  const price = parseFloat(tokenData.priceUsd);
+  const change = (Math.random() - 0.5) * price * 0.1; // ±5%
+  return price + change;
 }
 
 module.exports = { monitorAndTrade };
