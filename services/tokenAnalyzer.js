@@ -1,24 +1,23 @@
-const axios = require("axios");
-
 function analyzeToken(token) {
-  const scamIndicators = ["rug", "honeypot", "scam"];
-  const isSuspicious = scamIndicators.some((word) => token.name.toLowerCase().includes(word));
-
-  console.log(`\n🛠️ Analisis Token:
-  - Nama : ${token.name}
-  - Indikasi Scam: ${isSuspicious ? "⚠️ Ya" : "✅ Tidak"}`);
-
+  const scamIndicators = ['rug', 'honeypot', 'scam'];
+  const isSuspicious = scamIndicators.some(word => token.name.toLowerCase().includes(word));
+  console.log(`\n🛠️ Analisis Token:\n  - Nama : ${token.name}\n  - Indikasi Scam: ${isSuspicious ? '⚠️ Ya' : '✅ Tidak'}`);
   return !isSuspicious;
 }
 
 async function getTokenDetails(address) {
-  try {
-    const response = await axios.get(`https://api.dexscreener.com/latest/dex/tokens/${address}`);
-    return response.data.pairs[0];
-  } catch (error) {
-    console.error("❌ Gagal mendapatkan detail token:", error.message);
-    return null;
-  }
+  // Return dummy details
+  return {
+    baseToken: {
+      name: 'Sample Token',
+      symbol: 'SMP',
+      address,
+    },
+    priceUsd: '0.01',
+    volume: { h24: 1000 },
+    liquidity: { usd: 5000 },
+    url: `https://dexscreener.com/token/${address}`,
+  };
 }
 
 module.exports = { analyzeToken, getTokenDetails };
