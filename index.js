@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("./utils/loadEnv");
 const readline = require("readline");
 const { sniffNewToken } = require("./services/tokenSniffer");
 const { analyzeToken, getTokenDetails } = require("./services/tokenAnalyzer");
@@ -6,15 +6,9 @@ const { buyToken, checkWalletBalance } = require("./services/tokenTrader");
 const { monitorAndTrade } = require("./services/priceMonitor");
 
 // Fungsi interaktif untuk Y/N
-const askQuestion = (query) => {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-  return new Promise((resolve) => rl.question(query, (ans) => {
-    rl.close();
-    resolve(ans.toLowerCase());
-  }));
+const askQuestion = async (query) => {
+  console.log(query + "n");
+  return "n";
 };
 
 (async () => {
